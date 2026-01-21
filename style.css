@@ -1,0 +1,413 @@
+/* --- GLOBAL RESETS & VARS --- */
+:root {
+    --bg-dark: #0a0a12;
+    --bg-panel: #11111a;
+    --neon-cyan: #00fff2;
+    --neon-purple: #d700ff;
+    --text-light: #c0c0c0;
+    --font-header: 'Rajdhani', sans-serif;
+    --font-code: 'Roboto Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-header);
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- BACKGROUND FX --- */
+/* 1. The Moving Dots */
+.bg-dots {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Creates a grid of tiny dots */
+    background-image: radial-gradient(var(--neon-cyan) 1px, transparent 1px);
+    background-size: 50px 50px; /* Spacing between dots */
+    opacity: 0.15;
+    z-index: -3;
+    animation: drift 60s linear infinite;
+}
+
+/* 2. Second Layer of Dots (Purple, slower, moving opposite) */
+.bg-dots.layer-2 {
+    background-image: radial-gradient(var(--neon-purple) 1px, transparent 1px);
+    background-size: 80px 80px; /* Wider spacing */
+    opacity: 0.1;
+    animation: drift 100s linear infinite reverse;
+}
+
+@keyframes drift {
+    from { background-position: 0 0; }
+    to { background-position: 100px 100px; }
+}
+
+/* 3. The Grid Lines (Static Overlay) */
+.grid-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 242, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 242, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -2;
+    opacity: 0.6;
+}
+
+/* 4. Scanlines */
+.scanline {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+    background-size: 100% 4px;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* --- HUD NAVIGATION --- */
+header {
+    padding: 20px 50px;
+    background: rgba(10, 10, 18, 0.95);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #333;
+}
+
+.simple-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    color: white;
+    font-family: var(--font-header);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #888;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--neon-cyan);
+}
+
+@media (max-width: 768px) {
+    header { padding: 20px; }
+    .nav-links { display: none; }
+}
+
+/* --- SECTIONS GLOBAL --- */
+section {
+    padding: 100px 10%;
+    min-height: 80vh;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.prefix { color: var(--neon-cyan); margin-right: 10px; }
+
+/* --- HERO SECTION (PROFILE) --- */
+#profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 140px;
+}
+
+.profile-frame {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 30px;
+    background: var(--neon-cyan);
+    padding: 4px;
+    box-shadow: 0 0 25px var(--neon-cyan);
+    border-radius: 50%;
+    position: relative;
+    z-index: 2001; 
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+h1 {
+    font-size: 4rem;
+    color: white;
+    letter-spacing: 5px;
+    text-shadow: 2px 2px 0px var(--neon-purple), -2px -2px 0px var(--neon-cyan);
+    position: relative;
+    z-index: 1001;
+}
+
+.hud-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    margin: 20px auto;
+    width: 60%;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: var(--neon-purple);
+    font-weight: 600;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1001;
+}
+
+.terminal-text {
+    font-family: var(--font-code);
+    color: var(--neon-cyan);
+    margin-top: 10px;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1001;
+}
+
+/* --- CYBER BUTTONS --- */
+.action-buttons {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1001;
+}
+
+.btn-cyber {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-cyber.neon-cyan {
+    background: rgba(0, 255, 242, 0.1);
+    color: var(--neon-cyan);
+    border: 1px solid var(--neon-cyan);
+}
+
+.btn-cyber.neon-purple {
+    background: rgba(215, 0, 255, 0.1);
+    color: var(--neon-purple);
+    border: 1px solid var(--neon-purple);
+}
+
+.btn-cyber:hover {
+    background: var(--neon-cyan);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px var(--neon-cyan);
+}
+.btn-cyber.neon-purple:hover {
+    background: var(--neon-purple);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px var(--neon-purple);
+}
+
+/* --- STATS GUI (HEXAGONS) --- */
+.stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    z-index: 1001;
+}
+
+.hex-container {
+    width: 200px;
+    height: 220px;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 242, 0.3));
+}
+
+.hex {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-panel);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--neon-cyan);
+}
+
+.hex-inner {
+    text-align: center;
+    padding: 20px;
+}
+
+.hex h3 {
+    color: var(--neon-cyan);
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.stat-bar {
+    width: 100%;
+    height: 8px;
+    background: #222;
+    border: 1px solid #444;
+    margin-bottom: 10px;
+}
+
+.stat-bar .fill {
+    height: 100%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.hex p {
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    color: var(--neon-purple);
+}
+
+/* --- MISSIONS (PROJECTS) --- */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    position: relative;
+    z-index: 1001;
+}
+
+.data-card {
+    background: var(--bg-panel);
+    border: 1px solid;
+    padding: 25px;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    transition: 0.3s;
+}
+
+.cyan-theme { border-color: var(--neon-cyan); }
+.purple-theme { border-color: var(--neon-purple); }
+
+.data-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px currentColor;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.badge {
+    background: #222;
+    padding: 2px 8px;
+    border: 1px solid currentColor;
+}
+
+.data-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.terminal-desc {
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    border-left: 2px solid #333;
+    padding-left: 10px;
+}
+
+.cyber-link {
+    font-family: var(--font-code);
+    text-decoration: none;
+    color: currentColor;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.cyber-link:hover {
+    text-shadow: 0 0 5px currentColor;
+    letter-spacing: 2px;
+}
+
+/* --- CONTACT --- */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.big-link {
+    font-size: 1.5rem;
+    color: var(--neon-cyan);
+}
+
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 30px;
+    background: var(--bg-dark);
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    color: #666;
+    position: relative;
+    z-index: 1001;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
